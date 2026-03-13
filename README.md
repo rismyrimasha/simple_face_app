@@ -109,7 +109,7 @@ PHP Pages – Behavior
 ### `register.php`
 
 - Shows a two‑column layout:
-  - **Left**: photo upload area with live preview.
+  - **Left**: photo upload area with live preview and optional **webcam capture**.
   - **Right**: form fields:
     - Full Name (required)
     - Age
@@ -118,7 +118,7 @@ PHP Pages – Behavior
     - Email
     - Address (textarea)
     - Notes (textarea)
-    - Photo (required)
+    - Photo (required – provided either by file upload or webcam capture)
 - On submit:
   - Validates that **name** and **photo** are present.
   - Validates photo extension: `jpg`, `jpeg`, `png`, `webp`.
@@ -130,17 +130,19 @@ PHP Pages – Behavior
   - On success:
     - Stores all person details + `face_encoding` (JSON string) in MySQL.
     - Shows a success message with a link back to the dashboard.
-  - Uses client‑side JavaScript (`FileReader`) to display a live image preview.
+  - Uses client‑side JavaScript:
+    - `FileReader` to display a live preview for file uploads.
+    - `getUserMedia` + `<video>` + `<canvas>` to capture a frame from the webcam, convert it to a JPEG blob, and submit it as the `photo` file field.
 
 ### `search.php`
 
 - Two‑column layout:
-  - **Left**: query photo upload with live preview + submit button.
+  - **Left**: query photo upload with live preview **or webcam capture**, plus submit button.
   - **Right**: result panel.
 - On submit:
   - Fetches all `id, face_encoding` rows from `persons` where `face_encoding IS NOT NULL`.
   - Builds a JSON array of `{id, encoding}` objects.
-  - Sends the query photo and this JSON payload to Python **`/search`**.
+  - Sends the query photo (from file input or webcam capture) and this JSON payload to Python **`/search`**.
   - If Python returns `match_id`:
     - Loads full details of that person from MySQL.
     - Displays:
@@ -241,7 +243,16 @@ Setup Instructions
      pip install flask face_recognition numpy Pillow
      ```
 
-   - **Note**: `face_recognition` depends on `dlib`. Make sure you have a working `dlib` installation for your OS and Python version.
+   - **On Windows with Python 3.10**, you can also use:
+
+     ```bash
+     py -3.10 -m pip install --upgrade pip
+     py -3.10 -m pip install dlib face_recognition flask numpy Pillow
+     ```
+
+   - **Note**: `face_recognition` depends on `dlib`. On Windows you may need:
+     - [CMake](https://cmake.org/download/)
+     - Visual Studio Build Tools with the “Desktop development with C++” workload.
 
 5. **Run the Flask API**
 
@@ -268,4 +279,14 @@ Setup Instructions
 
    - Visit: `http://localhost/faceapp/php/`
    - Register a few people with clear, front‑facing photos.
-   - Use the **Search by Face** page to upload a new photo and test matching.
+   - Use the **Search by Face** page to upload or capture a new photo and test matching.
+
+Git Notes
+---------
+
+- The `uploads/` directory is ignored via `.gitignore` so uploaded photos are **not** committed to Git.
+- Recommended workflow:
+  - Create feature branches from `main` (e.g. `feature/face-app-webcam`).
+  - Commit your changes there.
+  - Push the branch to GitHub and open a Pull Request into `main`.
+

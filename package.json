@@ -1,0 +1,22 @@
+{
+  "name": "simple_face_app",
+  "version": "1.0.0",
+  "description": "Simple Face App ===============",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rismyrimasha/simple_face_app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rismyrimasha/simple_face_app/issues"
+  },
+  "homepage": "https://github.com/rismyrimasha/simple_face_app#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^25.5.0"
+  }
+}

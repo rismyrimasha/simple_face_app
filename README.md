@@ -217,69 +217,78 @@ UI & Styling
 Setup Instructions
 ------------------
 
-1. **Import database schema**
-   - Open phpMyAdmin (or your preferred MySQL client).
-   - Import `sql/schema.sql`.
+### 1. Import database schema
 
-2. **Configure PHP**
-   - Open `php/config.php`.
-   - Set:
-     - `DB_HOST`
-     - `DB_NAME` (default: `faceapp`)
-     - `DB_USER`
-     - `DB_PASS`
-   - Make sure the `uploads/` directory exists and is writable by PHP (the app will attempt to create it on first run).
+- Open phpMyAdmin (or your preferred MySQL client).
+- Import `sql/schema.sql` into a database named `faceapp`.
 
-3. **Place PHP files into your web root**
-   - For WAMP/XAMPP, copy the `php/` folder into your web root (e.g. `C:\wamp64\www\faceapp\php` or similar).
-   - Access it in the browser as:  
-     `http://localhost/faceapp/php/`
+### 2. Configure PHP
 
-4. **Set up Python environment**
-   - Create and activate a virtual environment (recommended).
-   - Install dependencies:
+- Open `php/config.php`.
+- Set:
+  - `DB_HOST`
+  - `DB_NAME` (default: `faceapp`)
+  - `DB_USER`
+  - `DB_PASS`
+- Make sure the `uploads/` directory exists and is writable by PHP  
+  (the app will attempt to create it on first run).
 
-     ```bash
-     pip install flask face_recognition numpy Pillow
-     ```
+### 3. Place PHP files into your web root
 
-   - **On Windows with Python 3.10**, you can also use:
+- On WAMP, this repo is already under `C:\wamp64\www\simple_face_app`.
+- You can access the app from the browser at:  
+  `http://localhost/simple_face_app/php/`
 
-     ```bash
-     py -3.10 -m pip install --upgrade pip
-     py -3.10 -m pip install dlib face_recognition flask numpy Pillow
-     ```
+### 4. Set up Python environment
 
-   - **Note**: `face_recognition` depends on `dlib`. On Windows you may need:
-     - [CMake](https://cmake.org/download/)
-     - Visual Studio Build Tools with the “Desktop development with C++” workload.
+- Create and activate a virtual environment (recommended).
+- Install dependencies (generic):
 
-5. **Run the Flask API**
+  ```bash
+  pip install flask face_recognition numpy Pillow
+  ```
 
-   From the `python/` folder:
+- **On Windows with Python 3.10**, you can also use:
 
-   ```bash
-   python app.py
-   ```
+  ```bash
+  py -3.10 -m pip install --upgrade pip
+  py -3.10 -m pip install dlib face_recognition flask numpy Pillow
+  ```
 
-   - The API will run on `http://127.0.0.1:5001`.
-   - Test it in a browser or with curl:
+- **Note**: `face_recognition` depends on `dlib`. On Windows you may need:
+  - [CMake](https://cmake.org/download/)
+  - Visual Studio Build Tools with the “Desktop development with C++” workload.
 
-     ```bash
-     curl http://127.0.0.1:5001/health
-     ```
+### 5. Run the Flask API
 
-     You should see:
+From the `python/` folder:
 
-     ```json
-     {"status": "ok"}
-     ```
+```bash
+cd python
+py -3.10 app.py    # or: python app.py if python is on PATH
+```
 
-6. **Use the web app**
+- The API will run on `http://127.0.0.1:5001`.
+- Test it in a browser or with curl:
 
-   - Visit: `http://localhost/faceapp/php/`
-   - Register a few people with clear, front‑facing photos.
-   - Use the **Search by Face** page to upload or capture a new photo and test matching.
+  ```bash
+  curl http://127.0.0.1:5001/health
+  ```
+
+  You should see:
+
+  ```json
+  {"status": "ok"}
+  ```
+
+### 6. Run the web app
+
+- Make sure WAMP (Apache + MySQL) is running.
+- In your browser, open:  
+  `http://localhost/simple_face_app/php/`
+- From there:
+  - Use **Register** to register people (upload file or capture via webcam).
+  - Use **Search by Face** to identify a person using a new photo or webcam capture.
 
 Git Notes
 ---------
